@@ -6,11 +6,12 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include "edge.h"
 
 class Graph
 {
     std::vector<int> vertexes;
-    std::vector<std::pair<int*, int*>> edges;
+    std::vector<Edge> edges;
 public:
     Graph(std::ifstream file);
 
