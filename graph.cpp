@@ -1,19 +1,22 @@
 #include "graph.h"
 
 Graph::Graph(std::ifstream file) {
-    {
+
         int vertexNo;
         file >> vertexNo;
         for (int i = 0; i < vertexNo; ++i)
             vertexes.push_back(i);
-    }
+
 
     while (file.good()) {
-        int first, second;
+        int first = vertexNo, second = vertexNo;
         file >> first;
         file >> second;
+        if (first >= vertexNo || second >= vertexNo)
+            break;
         edges.emplace_back(&vertexes[first], &vertexes[second]);
     }
+    //std::sort(vertexes.begin(),vertexes.end());
 }
 
 void Graph::checkIsomorphism(Graph &other) {
@@ -21,11 +24,18 @@ void Graph::checkIsomorphism(Graph &other) {
         std::cout << "Nieizomorficzne\n";
         return;
     }
+    if (edges.size() == 0) {
+        std::cout << "Izomorficzne\n";
+        for (int i=0; i < other.vertexes.size(); ++i) {
+            std::cout << i << " --> " << other.vertexes[i] << '\n';
+        }
+        return;
+    }
     for (;;) {
         if (std::is_permutation(edges.begin(), edges.end(), other.edges.begin())) {
-            std::cout << "Izomorficzne!\n";
+            std::cout << "Izomorficzne\n";
             for (int i=0; i<other.vertexes.size(); ++i) {
-                std::cout << i << " ---> " << other.vertexes[i] << '\n';
+                std::cout << i << " --> " << other.vertexes[i] << '\n';
             }
             return;
         }
